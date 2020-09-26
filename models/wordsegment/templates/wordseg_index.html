@@ -10,7 +10,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row" style="width:90vw; height:100vh; font-family:Microsoft JhengHei">
+    <div class="row" style="width:60vw; height:100vh; font-family:Microsoft JhengHei">
         <form id="submitform" name="submitform" action="{{ url_for('.submit') }}" method="post" style="height:80%;">
             <h1>請輸入文字</h1>
             <p></p>
@@ -25,7 +25,7 @@
                 <input class="btn btn-danger btn-lg" type="button" value="clear" onclick="javascript:eraseText();">
                 <input class="btn btn-success btn-lg" type="submit" value="submit" >
             </div>
-            <select class="form-control" id="options" name="options" style="height:10%; width:10%">
+            <select class="form-control" id="options" name="options" style="height:8%; width:10%">
                 <option value="forward">forward</option>
                 <option value="backward">backward</option>    
                 <option value="best">best</option>  

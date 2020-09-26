@@ -27,22 +27,28 @@ def submit():
 
     return jsonify(result=source_text+'123123', select='select', now_time='now_time')
 
-@socketio.on('send_message')   
+@socketio.on('session_connect', namespace='/newsgen')   
+def message_recieved(data):   
+    now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
+    #print('*******connect establish', now_time)
+    emit('status', {'msg': 'connect establish: '+now_time})
+
+@socketio.on('send_message', namespace='/newsgen')   
 def message_recieved(data):   
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
     print(now_time)
-    print('data', data)
-    # emit('message', {'msg': data['text']})
-    test()
+    sent = data['text']
+    emit('message', {'msg': sent})
 
-@socketio.on('joined')   
-def message_recieved(data):   
-    now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
-    print(now_time)
-    print('data', data)
+print('='*30)
+print('start load gpt2 model')
+print('='*30)
 
-def test():
-    for i in range(10):
-        emit('message', {'msg': str(i)})
-        print(str(i))
-        time.sleep(0.5)
+# from transformers import BertTokenizerFast
+# from transformers import GPT2Tokenizer, GPT2LMHeadModel
+
+# bert_tokenizer = BertTokenizerFast.from_pretrained('bert-base-chinese')
+# gpt_tokenizer = GPT2Tokenizer.from_pretrained('gpt2-medium')
+
+# model = GPT2LMHeadModel.from_pretrained('gpt2-medium')
+# model.resize_token_embeddings(bert_tokenizer.vocab_size)
