@@ -1,0 +1,126 @@
+{% extends "bootstrap/base.html" %}
+
+{% block metas %}
+{{ super() }}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+{% endblock %}
+
+{% block title %}長詞優先段詞器{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row" style="width:1200px; font-family:Microsoft JhengHei">
+        <form id=seg-result>
+            <h1>option</h1>
+            <button class="btn btn-info btn-pin btn-bg5" onclick="return false">
+            {%if option%}
+                {{option}}
+            {%endif%}
+            </button>
+
+            <h1>length</h1>
+
+            <button class="btn btn-info btn-pin btn-bg5" onclick="return false">
+            {%if length%}
+                {{length}}
+            {%endif%}
+            </button>
+
+            <div style="">
+                <div style="float:left;"><h1>final result</h1></div>
+                <div style="float:right;"><h3>{{ now_time }}</h3></div>
+            </div>
+
+            <p></p>
+
+            <textarea class="form-control" style="height:500px; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
+                background-color:#e7e5dfc4; resize:none;font-size:20px" 
+                id="submitsummary" readonly="readonly" name="submitsummary" type="text">{%if output%}{{output}}{%endif%}</textarea> 
+
+            <p></p>
+
+            <div style="">
+                <textarea id="select" name="select" class="form-control" style="width:300px; height:50px; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
+                background-color:#e7e5dfc4; font-size:20px"></textarea>
+                <p></p>
+                <input id="btn_merge" name="btn_merge" class="btn btn-info btn-lg" type="button" value="merge" style="width:100px; float:left; ">
+                <input id="btn_split" name=btn_split" class="btn btn-success btn-lg" type="button" value="split" style="width:100px; float:left; margin-left:10px">
+                
+                <input class="btn btn-warning btn-lg" type="button" value="back" onclick="history.back()" style="width:100px; float:right;">
+            </div>
+
+            <p></p>
+            
+        </form>
+        
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script>
+    // 左鍵框選文字
+    $(function(){
+        var m_MouseDown = false;
+        
+        document.getElementById('submitsummary').onmousedown = function (e) {
+            m_MouseDown = true;
+        };
+
+        document.getElementById('submitsummary').onmouseup = function (e) {
+            m_MouseDown = false;
+            };
+
+        document.getElementById('submitsummary').onmousemove = function(e) {
+            if (m_MouseDown) {
+                $("#select").html(getText());
+            }        
+        }
+
+        function getText() {
+            var elem = document.getElementById('submitsummary');
+                return elem.value.substring(elem.selectionStart,
+                                            elem.selectionEnd);
+        }
+    });
+
+    function Show(data) {
+      $('#submitsummary').text(data.result);
+      $('#select').text(data.select);
+    }
+
+    //merge button onclick
+    $('#btn_merge').on('click', mergeText);
+
+    function mergeText(ev) {
+    //console.log("in mergeText")
+        ev.preventDefault();
+        $.ajax({
+        method: 'POST',
+        url: {{ url_for('.merge')|tojson }},
+        data: $("#seg-result").serialize()
+        }).done(Show);
+    }
+
+    //split button onclick
+    $('#btn_split').on('click', splitText);
+
+    function splitText(ev) {
+        ev.preventDefault();
+        $.ajax({
+        method: 'POST',
+        url: {{ url_for('.split')|tojson }},
+        data: $("#seg-result").serialize()
+        }).done(Show);
+    }
+
+    
+
+</script>
+
+{% endblock %}
