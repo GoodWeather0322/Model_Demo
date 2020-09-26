@@ -1,0 +1,114 @@
+{% extends "bootstrap/base.html" %} 
+{% block head %} 
+    {% block metas %} 
+    {{ super() }}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
+    {% endblock %} 
+    {{ super() }}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+{% endblock %}
+
+{% block title %}新聞文章生成器{% endblock %} 
+
+{% block content %}
+<div class="container">
+    <div class="row" style="width:90vw; height:100vh; font-family:Microsoft JhengHei">
+        <form id="submitform" name="submitform" method="post" style="height:35%;">
+            <h1>請輸入文字</h1>
+            <p></p>
+            <textarea class="form-control" style="font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="submitsummary" name="submitsummary" type="text"></textarea>
+
+            <p></p>
+            <div style="float:right;">
+                <input class="btn btn-yellow btn-lg" type="button" value="connect" onclick="javascript:connectSoc();">
+                <input class="btn btn-yellow btn-lg" type="button" value="sent" onclick="javascript:sendSoc();">
+                <input class="btn btn-danger btn-lg" type="button" value="clear" onclick="javascript:eraseText();">
+                <input class="btn btn-success btn-lg" type="submit" value="submit">
+            </div>
+            <select class="form-control" id="options" name="options" style="height:20%; width:15%;">
+                <option value="forward">forward</option>
+                <option value="backward">backward</option>    
+                <option value="best">best</option>  
+            </select>
+        </form>
+        <textarea readonly="readonly" class="form-control" style="height:50%;font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="resultgen" name="resultgen" type="text"></textarea>
+
+    </div>
+</div>
+
+
+{% endblock %} 
+{% block scripts %} 
+{{ super() }}
+<script>
+    function eraseText() {
+        document.getElementById("submitsummary").value = "";
+    }
+
+    function Show(data) {
+        $('#resultgen').val(data.result);
+    }
+
+    $("#submitform").submit(function(ev) {
+        ev.preventDefault();
+
+        //var text = document.getElementById("submitsummary").value
+
+        //The .text() method cannot be used on form inputs or scripts. 
+        //To set or get the text value of input or textarea elements, use the .val() method. 
+        //To get the value of a script element, use the .html() method. 
+        //https://api.jquery.com/text/
+
+        //var text = $("#submitsummary").val();
+        //alert(text);
+        //$("#resultgen").val(text);
+        //alert({{ url_for('.submit')|tojson }});
+        $.ajax({
+            method: 'POST',
+            url: {{ url_for('.submit')|tojson }},
+            data: $("#submitsummary").serialize(),
+            success: function(data){
+                $('#resultgen').val(data.result);
+            },
+            error: function(xhr){
+                $('#resultgen').val(xhr.statusText);
+            }
+            });
+
+    });
+    var socket;
+    
+    function connectSoc() {
+        
+        //alert('http://' + document.domain + ':' + location.port)
+        socket = io.connect('http://' + document.domain + ':' + location.port)
+        socket.on('connect', function(msg) {
+            //var address = who.handshake.address;
+            //alert(msg)
+            socket.emit('joined', {'msg':msg});
+        });
+        socket.on('message', function(data) {
+            $('#resultgen').val($('#resultgen').val() + data.msg + '\n');
+            //console.log(data.msg)
+        });
+        
+        
+    }
+
+    function sendSoc(){
+        var text = $("#submitsummary").val();
+        //alert(text)
+
+        socket.emit('send_message', {'text':text});
+    }
+    
+
+
+</script>
+
+{% endblock %}

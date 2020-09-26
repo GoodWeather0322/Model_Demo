@@ -10,12 +10,12 @@
 
 {% block content %}
 <div class="container">
-    <div class="row" style="width:1200px; font-family:Microsoft JhengHei">
-        <form id="submitform" name="submitform" action="{{ url_for('.submit') }}" method="post" style="height:600px;">
+    <div class="row" style="width:90vw; height:100vh; font-family:Microsoft JhengHei">
+        <form id="submitform" name="submitform" action="{{ url_for('.submit') }}" method="post" style="height:80%;">
             <h1>請輸入文字</h1>
             <p></p>
 
-            <textarea class="form-control" style="height:500px;font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
+            <textarea class="form-control" style="height:80%; font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
             background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard"
             placeholder="700 character limit..." maxlength="700" 
             id="submitsummary" name="submitsummary" type="text"></textarea> 
@@ -25,7 +25,7 @@
                 <input class="btn btn-danger btn-lg" type="button" value="clear" onclick="javascript:eraseText();">
                 <input class="btn btn-success btn-lg" type="submit" value="submit" >
             </div>
-            <select class="form-control" id="options" name="options" style="height:30px; width:150px">
+            <select class="form-control" id="options" name="options" style="height:10%; width:10%">
                 <option value="forward">forward</option>
                 <option value="backward">backward</option>    
                 <option value="best">best</option>  

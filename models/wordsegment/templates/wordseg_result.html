@@ -10,16 +10,16 @@
 
 {% block content %}
 <div class="container">
-    <div class="row" style="width:1200px; font-family:Microsoft JhengHei">
-        <form id=seg-result>
-            <h1>option</h1>
+    <div class="row" style="width:90vw; height:80vh; font-family:Microsoft JhengHei">
+        <form id=seg-result style="width:100%; height:80%;">
+            <h3>option</h3>
             <button class="btn btn-info btn-pin btn-bg5" onclick="return false">
             {%if option%}
                 {{option}}
             {%endif%}
             </button>
 
-            <h1>length</h1>
+            <h3>length</h3>
 
             <button class="btn btn-info btn-pin btn-bg5" onclick="return false">
             {%if length%}
@@ -28,26 +28,26 @@
             </button>
 
             <div style="">
-                <div style="float:left;"><h1>final result</h1></div>
-                <div style="float:right;"><h3>{{ now_time }}</h3></div>
+                <div style="float:left;"><h3>final result</h3></div>
+                <div style="float:right;"><h4>{{ now_time }}</h4></div>
             </div>
 
             <p></p>
 
-            <textarea class="form-control" style="height:500px; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
+            <textarea class="form-control" style="height:70%; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
                 background-color:#e7e5dfc4; resize:none;font-size:20px" 
                 id="submitsummary" readonly="readonly" name="submitsummary" type="text">{%if output%}{{output}}{%endif%}</textarea> 
 
             <p></p>
 
             <div style="">
-                <textarea id="select" name="select" class="form-control" style="width:300px; height:50px; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
+                <textarea id="select" name="select" class="form-control" style="width:30%; height:15%; font-family:Microsoft JhengHei; border:1px solid #a6a6a6; 
                 background-color:#e7e5dfc4; font-size:20px"></textarea>
                 <p></p>
-                <input id="btn_merge" name="btn_merge" class="btn btn-info btn-lg" type="button" value="merge" style="width:100px; float:left; ">
-                <input id="btn_split" name=btn_split" class="btn btn-success btn-lg" type="button" value="split" style="width:100px; float:left; margin-left:10px">
+                <input id="btn_merge" name="btn_merge" class="btn btn-info btn-lg" type="button" value="merge" style="width:7%; float:left; ">
+                <input id="btn_split" name=btn_split" class="btn btn-success btn-lg" type="button" value="split" style="width:7%; float:left; margin-left:10px">
                 
-                <input class="btn btn-warning btn-lg" type="button" value="back" onclick="history.back()" style="width:100px; float:right;">
+                <input class="btn btn-warning btn-lg" type="button" value="back" onclick="history.back()" style="width:10%; float:right;">
             </div>
 
             <p></p>
