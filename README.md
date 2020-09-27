@@ -1,9 +1,7 @@
 # Model Demo
 
--------
-
 ## Intro
----------
+
 - Model demo website made by Python Flask
 - Demo some NLP models
 
@@ -12,7 +10,6 @@
 *   Chinese Maximum Matching Word Segmentation
 *   Chinese News Article Generator
 
----------
 
 ## Chinese Maximum Matching Word Segmentation
 
