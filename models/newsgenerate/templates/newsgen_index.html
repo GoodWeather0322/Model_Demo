@@ -28,7 +28,6 @@
                 
                 var text = $("#submitsummary").val();
                 //var text = document.getElementById("submitsummary").value
-                //console.log({'text':text})
                 socket.emit('send_message', {'text':text});
             });
             
