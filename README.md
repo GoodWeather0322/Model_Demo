@@ -6,7 +6,8 @@
 - Demo some NLP models
 
 
-# Model
+## Model
+
 *   [Chinese Maximum Matching Word Segmentation](#1)
 *   [Chinese News Article Generator](#2)
 
