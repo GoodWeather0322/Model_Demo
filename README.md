@@ -26,12 +26,10 @@ A PyTorch implementation of Chinese News Article Generator with with [Huggingfac
 
 - GPT-2 Model
 - BERT chinese tokenizer
-- dataset
-    - News article
-        - CNA News
-        - UDN News
-        - CTS News
-    - PTT article
-        - PTT Gossiping
+- Dataset (News articles & PTT articles)
+    - CNA News
+    - UDN News
+    - CTS News
+    - PTT Gossiping
 
 
