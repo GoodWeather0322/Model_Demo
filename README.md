@@ -13,7 +13,17 @@
 
 ## Chinese Maximum Matching Word Segmentation
 
-#### Chinese Word Segmentation implement by Maximum Matching Algorithm
+A Maximum Matching Algorithm implementation of Chinese Word Segmentation 
+
+- forward & backward
+
+## Chinese News Article Generator
+A PyTorch implementation of Chinese News Article Generator with with [Huggingface Transformers](https://github.com/huggingface/transformers)
+
+- GPT-2 Model
+- BERT chinese tokenizer
+- News article(CNA, UDN, CTS)
+- PTT article(PTT Gossiping)
 
 
 
