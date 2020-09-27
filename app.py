@@ -10,6 +10,9 @@ app = Flask(__name__,
     static_folder='templates/static',
     static_url_path='/static')
 
+app.config['JSON_AS_ASCII'] = False
+app.config['SECRET_KEY'] = 'goodweather'
+
 Bootstrap(app)
 app.register_blueprint(wordseg, url_prefix='/wordseg')
 app.register_blueprint(newsgen, url_prefix='/newsgen')

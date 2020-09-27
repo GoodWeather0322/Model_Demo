@@ -1,13 +1,12 @@
 {% extends "bootstrap/base.html" %} 
 {% block head %} 
-    {% block metas %} 
-    {{ super() }}
-    <meta charset="UTF-8" />
+{{ super() }}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
-    {% endblock %} 
-    {{ super() }}
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
         
         var socket;
@@ -21,13 +20,15 @@
                 //console.log("123:" + data.msg)
             });
             socket.on('message', function(data) {
-                $('#resultgen').val($('#resultgen').val() + data.msg + '\n')
+                $('#resultgen').val(data.msg)
+                //$('#resultgen').val($('#resultgen').val() + data.msg + '\n')
             });
             $("#submitform").submit(function(ev) {
                 ev.preventDefault();
                 
                 var text = $("#submitsummary").val();
-                //alert(text)
+                //var text = document.getElementById("submitsummary").value
+                //console.log({'text':text})
                 socket.emit('send_message', {'text':text});
             });
             
