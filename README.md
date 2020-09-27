@@ -23,7 +23,7 @@ A Maximum Matching Algorithm implementation of Chinese Word Segmentation
 
 A PyTorch implementation of Chinese News Article Generator with with [Huggingface Transformers](https://github.com/huggingface/transformers)
 
-Model is based on Pretrained GPT-2 Model and BERT chinese tokenizer, finetune by the following chinese articles
+Model is based on Pretrained GPT-2 Model and BERT chinese tokenizer, finetune by chinese news articles
 
 - GPT-2 Model
 - BERT chinese tokenizer
