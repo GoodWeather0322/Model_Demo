@@ -23,10 +23,10 @@ A Maximum Matching Algorithm implementation of Chinese Word Segmentation
 
 A PyTorch implementation of Chinese News Article Generator with with [Huggingface Transformers](https://github.com/huggingface/transformers)
 
-Model is based on Pretrained [GPT-2](https://github.com/openai/gpt-2) Model and BERT chinese tokenizer, finetune by chinese news articles
+Model is based on Pretrained [GPT-2 Model](https://github.com/openai/gpt-2) and [BERT chinese tokenizer](https://github.com/google-research/bert), finetune by chinese news articles
 
 - [GPT-2 Model](https://github.com/openai/gpt-2)
-- BERT chinese tokenizer
+- [BERT chinese tokenizer](https://github.com/google-research/bert)
 - Training Dataset (News articles & PTT articles)
     - CNA News
     - UDN News
