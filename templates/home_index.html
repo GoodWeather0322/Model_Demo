@@ -6,11 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 {% endblock %}
 
-{% block title %}HOME{% endblock %}
+{% block title %}Demo Home{% endblock %}
 
 {% block content %}
 
 <input class="btn btn-info btn-lg" type="button" value="斷詞器" onclick="window.location.href='{{ url_for('wordseg.index') }}'">
+<input class="btn btn-success btn-lg" type="button" value="文章產生器" onclick="window.location.href='{{ url_for('newsgen.index') }}'">
 
 
 {% endblock %}
