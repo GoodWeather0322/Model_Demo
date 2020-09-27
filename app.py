@@ -11,7 +11,7 @@ app = Flask(__name__,
     static_url_path='/static')
 
 app.config['JSON_AS_ASCII'] = False
-app.config['SECRET_KEY'] = 'goodweather'
+app.config['SECRET_KEY'] = '13gr4og-#ped'
 
 Bootstrap(app)
 app.register_blueprint(wordseg, url_prefix='/wordseg')
