@@ -20,7 +20,7 @@ A Maximum Matching Algorithm implementation of Chinese Word Segmentation
 
 <h3 id=2>Chinese News Article Generator</h3>
 
-### A PyTorch implementation of Chinese News Article Generator with with [Huggingface Transformers](https://github.com/huggingface/transformers)
+A PyTorch implementation of Chinese News Article Generator with with [Huggingface Transformers](https://github.com/huggingface/transformers)
 
 
 - GPT-2 Model
