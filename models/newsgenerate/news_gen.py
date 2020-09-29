@@ -110,7 +110,21 @@ def generate_news(sent):
                                         bos_token_id=bert_tokenizer.cls_token_id,
         #                                       eos_token_id=bert_tokenizer.sep_token_id
                                         )
-        output = ''.join(bert_tokenizer.convert_ids_to_tokens(bert_seqs[0]))
+
+        output_seq = bert_tokenizer.convert_ids_to_tokens(bert_seqs[0])
+
+        output = ''
+        for i in range(len(output_seq)):
+            if output_seq[i] == '[CLS]':
+                pass
+            elif:
+                output_seq[i] == '[UNK]':
+                pass
+            elif :
+                output_seq[i] == '[SEP]':
+                output += ' '
+            else:
+                output += output_seq[i]
         # print(output)
         emit('message', {'msg': output})
         
