@@ -117,11 +117,9 @@ def generate_news(sent):
         for i in range(len(output_seq)):
             if output_seq[i] == '[CLS]':
                 pass
-            elif:
-                output_seq[i] == '[UNK]':
+            elif output_seq[i] == '[UNK]':
                 pass
-            elif :
-                output_seq[i] == '[SEP]':
+            elif output_seq[i] == '[SEP]':
                 output += ' '
             else:
                 output += output_seq[i]
