@@ -2,6 +2,7 @@ models/newsgenerate/gpt2_model/*.mdl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+*/*/__pycache__/
 *.py[cod]
 *$py.class
 
