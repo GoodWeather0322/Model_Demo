@@ -1,0 +1,122 @@
+{% extends "bootstrap/base.html" %} 
+{% block head %} 
+{{ super() }}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        
+        var socket;
+        $(document).ready(function(){
+            socket = io.connect('http://' + document.domain + ':' + location.port + '/pos');
+            socket.on('connect', function() {
+                socket.emit('session_connect', {});
+            });
+            socket.on('status', function(data) {
+                $('#connect_status').text(data.msg);
+                //console.log("123:" + data.msg)
+            });
+            socket.on('message', function(data) {
+                $('#resultgen').val(data.msg)
+                //$('#resultgen').val($('#resultgen').val() + data.msg + '\n')
+            });
+            $("#submitform").submit(function(ev) {
+                ev.preventDefault();
+                
+                var text = $("#submitsummary").val();
+                //var text = document.getElementById("submitsummary").value
+                socket.emit('send_message', {'text':text});
+            });
+            
+        });
+    </script>
+{% endblock %}
+
+{% block title %}POS{% endblock %} 
+
+{% block content %}
+<div class="container">
+    <div class="row" style="width:60vw; height:100vh; font-family:Microsoft JhengHei">
+        <form id="submitform" name="submitform" method="post" style="height:30%;">
+            <h1>請輸入文字</h1>
+            <p></p>
+            <textarea class="form-control" style="height:60%; font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="submitsummary" name="submitsummary" type="text"></textarea>
+
+            <p></p>
+            <div>
+                <h4 id="connect_status" name="connect_status" style="float:left;">connect status</h4>
+                <div style="float:right;">
+                    <input class="btn btn-danger btn-lg" type="button" value="clear" onclick="javascript:eraseText();">
+                    <input class="btn btn-success btn-lg" type="submit" value="submit">
+                </div>
+            </div>
+            <!-- <select class="form-control" id="options" name="options" style="height:20%; width:15%;">
+                <option value="forward">forward</option>
+                <option value="backward">backward</option>    
+                <option value="best">best</option>  
+            </select> -->
+        </form>
+        <textarea readonly="readonly" class="form-control" style="height:50%;font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="resultgen" name="resultgen" type="text"></textarea>
+
+    </div>
+</div>
+
+
+{% endblock %} 
+{% block scripts %} 
+{{ super() }}
+<script>
+    function eraseText() {
+        document.getElementById("submitsummary").value = "";
+    }
+
+    function Show(data) {
+        $('#resultgen').val(data.result);
+    }
+
+    //$("#submitform").submit(function(ev) {
+    //    ev.preventDefault();
+
+        //var text = document.getElementById("submitsummary").value
+
+        //The .text() method cannot be used on form inputs or scripts. 
+        //To set or get the text value of input or textarea elements, use the .val() method. 
+        //To get the value of a script element, use the .html() method. 
+        //https://api.jquery.com/text/
+
+        //var text = $("#submitsummary").val();
+        //alert(text);
+        //$("#resultgen").val(text);
+        //alert({{ url_for('.submit')|tojson }});
+        
+        //$.ajax({
+        //    method: 'POST',
+        //    url: {{ url_for('.submit')|tojson }},
+        //    data: $("#submitsummary").serialize(),
+        //    success: function(data){
+        //        $('#resultgen').val(data.result);
+        //    },
+        //    error: function(xhr){
+        //        $('#resultgen').val(xhr.statusText);
+        //    }
+        //});
+
+    //});
+
+    //function sendSoc(){
+    //    var text = $("#submitsummary").val();
+    //    //alert(text)
+    //
+    //    socket.emit('send_message', {'text':text});
+    //}
+    
+
+
+</script>
+
+{% endblock %}

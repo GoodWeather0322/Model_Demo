@@ -1,4 +1,5 @@
 models/newsgenerate/gpt2_model/*.mdl
+models/chinesepos/albert_model/*.ckpt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

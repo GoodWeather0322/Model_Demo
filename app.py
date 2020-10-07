@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
 from models.wordsegment.word_seg import wordseg
 from models.newsgenerate.news_gen import newsgen
+from models.chinesepos.chinese_pos import pos
 from models.create_socket import socketio
 
 app = Flask(__name__, 
@@ -16,6 +17,7 @@ app.config['SECRET_KEY'] = '13gr4og-#ped'
 Bootstrap(app)
 app.register_blueprint(wordseg, url_prefix='/wordseg')
 app.register_blueprint(newsgen, url_prefix='/newsgen')
+app.register_blueprint(pos, url_prefix='/pos')
 
 socketio.init_app(app)
   
