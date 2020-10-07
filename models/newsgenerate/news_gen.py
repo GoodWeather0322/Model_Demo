@@ -64,7 +64,7 @@ for k, v in state_dict.items():
     name = k[7:] # remove `module.`
     new_state_dict[name] = v
 
-gpt2_model.load_state_dict(new_state_dict)
+print(gpt2_model.load_state_dict(new_state_dict))
 
 for parms in gpt2_model.parameters():
     parms.requires_grad=False
