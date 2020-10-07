@@ -1,7 +1,7 @@
 {% extends "bootstrap/base.html" %} 
 {% block head %} 
 {{ super() }}
-
+    <link rel="stylesheet" href="{{ url_for('pos.static', filename='style.css')}}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> 
     
@@ -20,7 +20,17 @@
                 //console.log("123:" + data.msg)
             });
             socket.on('message', function(data) {
-                $('#resultgen').val(data.msg)
+                var text = "";
+                
+                for(i=0;i<data.msg[0].length;i++){
+                    
+                    text += '<mark data-entity=\'' + data.msg[1][i] + '\'>'
+
+                    text += data.msg[0][i] + '</mark>' + ' '
+
+                }
+                
+                document.getElementById('resultgen').innerHTML = text
                 //$('#resultgen').val($('#resultgen').val() + data.msg + '\n')
             });
             $("#submitform").submit(function(ev) {
@@ -39,7 +49,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row" style="width:60vw; height:100vh; font-family:Microsoft JhengHei">
+    <div class="row" style="width:60vw; height:100vh">
         <form id="submitform" name="submitform" method="post" style="height:30%;">
             <h1>請輸入文字</h1>
             <p></p>
@@ -60,8 +70,11 @@
                 <option value="best">best</option>  
             </select> -->
         </form>
-        <textarea readonly="readonly" class="form-control" style="height:50%;font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
-            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="resultgen" name="resultgen" type="text"></textarea>
+        <div id="resultgen" name="resultgen" class="entities" style="height:50%;border:1px solid #a6a6a6; 
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700">
+        
+        </div>
+
 
     </div>
 </div>

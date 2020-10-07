@@ -8,7 +8,7 @@ from pathlib import Path
 from flask_socketio import SocketIO, emit
 from ..create_socket import socketio
 
-pos = Blueprint('pos', __name__, template_folder='templates')
+pos = Blueprint('pos', __name__, template_folder='templates', static_folder='static')
 
 @pos.route('/', methods=['GET', 'POST'])
 def index():
@@ -101,7 +101,7 @@ def do_pos(sent):
 
     if len(best_tags_list) != len(token):
         print('something error')
-        emit('message', {'msg': 'something error'})
+        emit('message', {'msg': [['something'], ['error']]})
 
     toks = []
     tags = []
@@ -110,6 +110,7 @@ def do_pos(sent):
     
     for tok, tag in zip(token[1:-1], best_tags_list[1:-1]):
         
+        tag = tag.lower()
         tag = tag.split('-')
         
         if len(tag) == 2:
@@ -117,7 +118,7 @@ def do_pos(sent):
         elif len(tag) == 3:
             bound, _, pos = tag
             
-        if bound == 'S':
+        if bound == 's':
             toks.append(tok)
             tags.append(pos)
             
@@ -125,10 +126,10 @@ def do_pos(sent):
             
         temp_tok += tok+' '
         
-        if bound == 'B':
+        if bound == 'b':
             tags.append(pos)
             
-        if bound == 'E':
+        if bound == 'e':
             temp_tok = temp_tok.replace(' ##', '')
             if temp_tok.replace(' ', '').encode().isalpha() == False:
                 temp_tok = temp_tok.replace(' ', '')
@@ -141,15 +142,17 @@ def do_pos(sent):
         temp_tok = ''
         
     if len(toks) != len(tags):
-        emit('message', {'msg': 'something error'})
+        emit('message', {'msg': [['something'], ['error']]})
 
     output = ''
 
     for tok, tag in zip(toks, tags):
         # print(tok, tag)
-        output += tok + ' {' + tag + '}' + '   '
+        output += tok + ' {' + tag.lower() + '}' + '   '
     
     # print(output)
-    emit('message', {'msg': output})
+    # output = [1, 2, 3, 4, 5]
+    emit('message', {'msg': [toks, tags]})
+
         
     print(output)
