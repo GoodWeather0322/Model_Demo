@@ -18,6 +18,7 @@
             socket.on('status', function(data) {
                 $('#connect_status').text(data.msg);
                 //console.log("123:" + data.msg)
+
             });
             socket.on('message', function(data) {
                 var text = "";
@@ -54,7 +55,8 @@
             <h1>請輸入文字</h1>
             <p></p>
             <textarea class="form-control" style="height:60%; font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
-            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="submitsummary" name="submitsummary" type="text"></textarea>
+            background-color:#e7e5dfc4;resize:none;font-size:20px" size="700" warp="hard" placeholder="enter start sentence" maxlength="700" id="submitsummary" name="submitsummary" type="text">白宮發言人表示，感染冠狀病毒的美國總統川普(donald john trump )日前離開醫院後於今日首度踏進白宮橢圓辦公室(oval office )。
+            </textarea>
 
             <p></p>
             <div>
@@ -73,7 +75,7 @@
         <div style="height:10%;"></div>
         <div id="resultgen" name="resultgen" class="entities" style="height:50%;font-family:Microsoft JhengHei;border:1px solid #a6a6a6; 
             background-color:#e7e5dfc4;resize:none;font-size:20px;overflow-y:scroll;" size="700" warp="hard" placeholder="enter start sentence" maxlength="700">
-        
+            <mark data-entity='loc'>白宮</mark> <mark data-entity='na'>發言人</mark> <mark data-entity='ve'>表示</mark> <mark data-entity='commacategory'>，</mark> <mark data-entity='vj'>感染</mark> <mark data-entity='na'>冠狀</mark> <mark data-entity='na'>病毒</mark> <mark data-entity='de'>的</mark> <mark data-entity='loc'>美國</mark> <mark data-entity='na'>總統</mark> <mark data-entity='per'>川普</mark> <mark data-entity='parenthesiscategory'>(</mark> <mark data-entity='per'>donald john trump </mark> <mark data-entity='parenthesiscategory'>)</mark> <mark data-entity='nd'>日前</mark> <mark data-entity='vc'>離開</mark> <mark data-entity='nc'>醫院</mark> <mark data-entity='ng'>後</mark> <mark data-entity='p'>於</mark> <mark data-entity='nd'>今日</mark> <mark data-entity='d'>首度</mark> <mark data-entity='vcl'>踏進</mark> <mark data-entity='loc'>白宮</mark> <mark data-entity='na'>橢圓</mark> <mark data-entity='nc'>辦公室</mark> <mark data-entity='parenthesiscategory'>(</mark> <mark data-entity='fw'>oval office </mark> <mark data-entity='parenthesiscategory'>)</mark> <mark data-entity='periodcategory'>。</mark> 
         </div>
 
 

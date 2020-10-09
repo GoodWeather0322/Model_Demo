@@ -28,10 +28,10 @@ def submit():
     return jsonify(result=source_text+'123123', select='select', now_time='now_time')
 
 @socketio.on('session_connect', namespace='/pos')   
-def message_recieved(data):   
+def message_recieved(data):       
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
     #print('*******connect establish', now_time)
-    emit('status', {'msg': 'connect establish: '+now_time})
+    emit('status', {'msg': 'connect establish: '+now_time,})
 
 @socketio.on('send_message', namespace='/pos')   
 def message_recieved(data):   
