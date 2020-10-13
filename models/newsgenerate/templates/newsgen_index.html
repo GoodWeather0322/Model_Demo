@@ -30,6 +30,12 @@
                 //var text = document.getElementById("submitsummary").value
                 socket.emit('send_message', {'text':text});
             });
+            $("#stop").click(function(ev) {
+                ev.preventDefault();
+
+                //var text = document.getElementById("submitsummary").value
+                socket.emit('stop_gen', {'text':'stop'});
+            });
             
         });
     </script>
@@ -52,6 +58,7 @@
                 <h4 id="connect_status" name="connect_status" style="float:left;">connect status</h4>
                 <div style="float:right;">
                     <input class="btn btn-danger btn-lg" type="button" value="clear" onclick="javascript:eraseText();">
+                    <input class="btn btn-warning btn-lg" type="button" value="stop" id="stop" name="stop">
                     <input class="btn btn-success btn-lg" type="submit" value="submit">
                 </div>
             </div>

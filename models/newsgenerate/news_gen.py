@@ -10,6 +10,8 @@ from ..create_socket import socketio
 
 newsgen = Blueprint('newsgen', __name__, template_folder='templates')
 
+stop_gen = False
+
 @newsgen.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('newsgen_index.html')
@@ -35,13 +37,21 @@ def message_recieved(data):
 
 @socketio.on('send_message', namespace='/newsgen')   
 def message_recieved(data):   
+    global stop_gen
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
     print(now_time)
     sent = data['text']
     print(sent)
     
     # emit('message', {'msg': sent})
+    stop_gen = False
     generate_news(sent)
+
+@socketio.on('stop_gen', namespace='/newsgen')   
+def message_recieved(data):  
+    global stop_gen
+    print('stop gen click')
+    stop_gen = True
     
 
 print('='*30)
@@ -74,15 +84,17 @@ print('trainable parms : ', sum(p.numel() for p in gpt2_model.parameters() if p.
 
 print('='*30)
 
-max_length = 200
-beam_size = 20
-repetition_penalty = 8.0
-temperature = 5.0
+max_length = 1000
+max_history_length = 120
+beam_size = 10
+repetition_penalty = 3.0
+temperature = 2.0
 top_p = 0.7
 no_repeat_ngram_size = 5
 per_output_length = 10
 
 def generate_news(sent):
+    global stop_gen
     sents = re.split('。|，| ', sent)
     while '' in sents:
         sents.remove('')
@@ -95,35 +107,61 @@ def generate_news(sent):
     bert_tokens = bert_tokenizer.tokenize(bert_sent)
     bert_idxs = bert_tokenizer.convert_tokens_to_ids(bert_tokens)
     bert_seqs = torch.LongTensor(bert_idxs).unsqueeze(0)
+
+    # print(bert_seqs.shape)
+
+    output = ''
+    output_sent = bert_tokens
+
+    for i in range(len(output_sent)):
+        if output_sent[i] == '[CLS]':
+            pass
+        elif output_sent[i] == '[UNK]':
+            pass
+        elif output_sent[i] == '[SEP]':
+            output += ' '
+        else:
+            output += output_sent[i]
     
     for i in range(max_length // per_output_length):
-        bert_seqs = gpt2_model.generate(bert_seqs, 
-                                        max_length=bert_seqs.size(1)+per_output_length, 
-                                        top_k=beam_size, 
-                                        top_p=top_p, 
-                                        repetition_penalty=repetition_penalty,
-                                        temperature=temperature,
-                                        do_sample = False,
-                                        num_return_sequences=1, 
-                                        no_repeat_ngram_size=no_repeat_ngram_size,
-                                        pad_token_id=bert_tokenizer.pad_token_id,
-                                        bos_token_id=bert_tokenizer.cls_token_id,
-        #                                       eos_token_id=bert_tokenizer.sep_token_id
-                                        )
+        if stop_gen == False:
+            # print('stop_gen', stop_gen)
+            if bert_seqs.size(1) > max_history_length:
+                bert_seqs = bert_seqs[:, -max_history_length:]
 
-        output_seq = bert_tokenizer.convert_ids_to_tokens(bert_seqs[0])
+            # print(bert_seqs.shape)
+            bert_seqs = gpt2_model.generate(bert_seqs, 
+                                            max_length=bert_seqs.size(1)+per_output_length, 
+                                            top_k=beam_size, 
+                                            top_p=top_p, 
+                                            repetition_penalty=repetition_penalty,
+                                            temperature=temperature,
+                                            do_sample = False,
+                                            num_return_sequences=1, 
+                                            no_repeat_ngram_size=no_repeat_ngram_size,
+                                            pad_token_id=bert_tokenizer.pad_token_id,
+                                            bos_token_id=bert_tokenizer.cls_token_id,
+            #                                       eos_token_id=bert_tokenizer.sep_token_id
+                                            )
 
-        output = ''
-        for i in range(len(output_seq)):
-            if output_seq[i] == '[CLS]':
-                pass
-            elif output_seq[i] == '[UNK]':
-                pass
-            elif output_seq[i] == '[SEP]':
-                output += ' '
-            else:
-                output += output_seq[i]
-        # print(output)
-        emit('message', {'msg': output})
+            output_seq = bert_tokenizer.convert_ids_to_tokens(bert_seqs[0])
+
+            output_sent = output_seq[-per_output_length:]
+
+            
+            for i in range(len(output_sent)):
+                if output_sent[i] == '[CLS]':
+                    pass
+                elif output_sent[i] == '[UNK]':
+                    pass
+                elif output_sent[i] == '[SEP]':
+                    output += ' '
+                else:
+                    output += output_sent[i]
+            # print(output)
+            emit('message', {'msg': output})
+        else:
+            print('stop generate article')
+            break
         
     print(output)
