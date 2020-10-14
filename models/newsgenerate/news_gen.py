@@ -158,6 +158,8 @@ def generate_news(sent):
                 elif output_sent[i] == '[SEP]':
                     output += ' '
                 else:
+                    if output_sent[i][:2] == '##':
+                        output_sent[i] = output_sent[i][2:]
                     output += output_sent[i]
             # print(output)
             emit('message', {'msg': output})
