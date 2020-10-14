@@ -127,7 +127,8 @@ def generate_news(sent):
         if stop_gen == False:
             # print('stop_gen', stop_gen)
             if bert_seqs.size(1) > max_history_length:
-                bert_seqs = bert_seqs[:, -max_history_length:]
+                # bert_seqs = bert_seqs[:, -max_history_length:]
+                bert_seqs = torch.cat([bert_seqs[:, 0].unsqueeze(0), bert_seqs[:, -5:]], dim=1)
 
             # print(bert_seqs.shape)
             bert_seqs = gpt2_model.generate(bert_seqs, 
