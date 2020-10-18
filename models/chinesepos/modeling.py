@@ -394,11 +394,13 @@ class CRF(nn.Module):
 
 class Albert_CRF(nn.Module):
     
-    def __init__(self, config_file, ner_id2tag):
+    def __init__(self, config_file, ner_id2tag, tokenizer_len):
         
         super().__init__()
         
         self.albert = AlbertModel(config_file)
+        
+        self.albert.resize_token_embeddings(tokenizer_len)
         
         self.classifier = nn.Linear(self.albert.config.hidden_size, len(ner_id2tag))
         

@@ -38,10 +38,11 @@ def message_recieved(data):
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
     print(now_time)
     sent = data['text']
-    print(sent)
+    option = data['option']
+    print(option, sent)
     
     # emit('message', {'msg': sent})
-    do_pos(sent)
+    do_pos(option, sent)
     
 
 print('='*30)
@@ -51,20 +52,26 @@ from transformers import BertTokenizer, AlbertConfig
 import torch
 from .modeling import Albert_CRF
 
-ner_tag_file = "models/chinesepos/albert_model/pos.tgt.dict"
-ner_tag2id = {}
-count = 0
-with open(ner_tag_file) as fp:
+pos_tag_file = "models/chinesepos/albert_model/pos.tgt.dict"
+tag2id = {}
+tag2id['[CKIP]'] = 0
+tag2id['[MONPA]'] = 1
+count = 2
+with open(pos_tag_file) as fp:
     for line in fp:
         line = line.strip().split()
-        ner_tag2id[line[0]] = count
-        count += 1    
-ner_id2tag = {v:k for k, v in ner_tag2id.items()}
+        tag2id[line[0]] = count
+        count += 1
+id2tag = {v:k for k, v in tag2id.items()}
+
+print(len(tag2id))
+
 
 tokenizer = BertTokenizer.from_pretrained('models/chinesepos/albert_model/config/bert_chinese_tokenizer')
 albert_config = AlbertConfig.from_json_file('models/chinesepos/albert_model/config/albert/config.json')
 
-albert_crf = Albert_CRF(albert_config, ner_id2tag)
+add_count = tokenizer.add_tokens(['[CKIP]', '[MONPA]'])
+albert_crf = Albert_CRF(albert_config, id2tag, len(tokenizer))
 
 from collections import OrderedDict
 ckpt = torch.load('models/chinesepos/albert_model/albert_large.ckpt', map_location='cpu')
@@ -85,8 +92,14 @@ print('trainable parms : ', sum(p.numel() for p in albert_crf.parameters() if p.
 print('='*30)
 
 
-def do_pos(sent):
-    sent = '[CLS] ' + sent + ' [SEP]'
+def do_pos(option, sent):
+    if option == 'CKIP':
+        sent = '[CKIP] ' + sent + ' [SEP]'
+    elif option == 'MONPA':
+        sent = '[MONPA] ' + sent + ' [SEP]'
+    else:
+        sent = '[MONPA] ' + sent + ' [SEP]'
+    
     token = tokenizer.tokenize(sent)
     if len(token) > 256:
         token = token[:256]
@@ -97,7 +110,7 @@ def do_pos(sent):
 
     best_tags_list = albert_crf(input_seq.unsqueeze(0), input_mask.unsqueeze(0))
     best_tags_list = best_tags_list[0]
-    best_tags_list = [ner_id2tag[tag_id] for tag_id in best_tags_list]
+    best_tags_list = [id2tag[tag_id] for tag_id in best_tags_list]
 
     if len(best_tags_list) != len(token):
         print('something error')

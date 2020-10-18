@@ -39,7 +39,9 @@
                 
                 var text = $("#submitsummary").val();
                 //var text = document.getElementById("submitsummary").value
-                socket.emit('send_message', {'text':text});
+                var option = $("#options").val();
+                //console.log('123 ' + option)
+                socket.emit('send_message', {'text':text, 'option':option});
             });
             
         });
@@ -77,6 +79,10 @@
             background-color:#e7e5dfc4;resize:none;font-size:20px;overflow-y:scroll;" size="700" warp="hard" placeholder="enter start sentence" maxlength="700">
             <mark data-entity='loc'>白宮</mark> <mark data-entity='na'>發言人</mark> <mark data-entity='ve'>表示</mark> <mark data-entity='commacategory'>，</mark> <mark data-entity='vj'>感染</mark> <mark data-entity='na'>冠狀</mark> <mark data-entity='na'>病毒</mark> <mark data-entity='de'>的</mark> <mark data-entity='loc'>美國</mark> <mark data-entity='na'>總統</mark> <mark data-entity='per'>川普</mark> <mark data-entity='parenthesiscategory'>(</mark> <mark data-entity='per'>donald john trump </mark> <mark data-entity='parenthesiscategory'>)</mark> <mark data-entity='nd'>日前</mark> <mark data-entity='vc'>離開</mark> <mark data-entity='nc'>醫院</mark> <mark data-entity='ng'>後</mark> <mark data-entity='p'>於</mark> <mark data-entity='nd'>今日</mark> <mark data-entity='d'>首度</mark> <mark data-entity='vcl'>踏進</mark> <mark data-entity='loc'>白宮</mark> <mark data-entity='na'>橢圓</mark> <mark data-entity='nc'>辦公室</mark> <mark data-entity='parenthesiscategory'>(</mark> <mark data-entity='fw'>oval office </mark> <mark data-entity='parenthesiscategory'>)</mark> <mark data-entity='periodcategory'>。</mark> 
         </div>
+        <select class="form-control" id="options" name="options" style="height:8%; width:20%">
+            <option value="MONPA">MONPA</option>  
+            <option value="CKIP">CKIP</option> 
+        </select>
 
 
     </div>
