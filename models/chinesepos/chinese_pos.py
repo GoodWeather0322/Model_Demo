@@ -83,6 +83,8 @@ for k, v in state_dict.items():
 
 print(albert_crf.load_state_dict(new_state_dict))
 
+albert_crf = albert_crf.eval()
+
 for parms in albert_crf.parameters():
     parms.requires_grad=False
     

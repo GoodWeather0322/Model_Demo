@@ -76,6 +76,8 @@ for k, v in state_dict.items():
 
 print(gpt2_model.load_state_dict(new_state_dict))
 
+gpt2_model = gpt2_model.eval()
+
 for parms in gpt2_model.parameters():
     parms.requires_grad=False
     
